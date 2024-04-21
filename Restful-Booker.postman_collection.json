@@ -1,0 +1,3291 @@
+{
+	"info": {
+		"_postman_id": "eacb1fe8-670b-43e7-8935-6fba7c2f3d7a",
+		"name": "Restful-Booker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34380500"
+	},
+	"item": [
+		{
+			"name": "Auth user stock user&pass",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Authorization stock data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const token = pm.response.json().token;\r",
+											"pm.collectionVariables.set('token', token);\r",
+											"\r",
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get token(string)\", () => {\r",
+											"    pm.expect(pm.response.json().token).to.be.a(\"string\")\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Booking",
+					"item": [
+						{
+							"name": "Create user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const id = pm.response.json().bookingid;\r",
+											"pm.collectionVariables.set('id', id);\r",
+											"\r",
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect(pm.response.json().bookingid).to.be.a(\"number\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Test body\", () => {\r",
+											"    const resp = pm.response.json().booking;\r",
+											"    pm.expect(resp.firstname).to.eql(\"Arnold\");\r",
+											"    pm.expect(resp.lastname).to.eql(\"Flugegeheimen\");\r",
+											"    pm.expect(resp.totalprice).to.eql(111);\r",
+											"    pm.expect(resp.depositpaid).to.eql(true);\r",
+											"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-04-22\");\r",
+											"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-04-23\");\r",
+											"    pm.expect(resp.additionalneeds).to.eql(\"Bad feeling\")\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\" : \"Arnold\",\r\n    \"lastname\" : \"Flugegeheimen\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-23\"\r\n    },\r\n    \"additionalneeds\" : \"Bad feeling\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/booking",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Test body\", () => {\r",
+											"    const resp = pm.response.json();\r",
+											"    pm.expect(resp.firstname).to.eql(\"Arnold\");\r",
+											"    pm.expect(resp.lastname).to.eql(\"Flugegeheimen\");\r",
+											"    pm.expect(resp.totalprice).to.eql(111);\r",
+											"    pm.expect(resp.depositpaid).to.eql(true);\r",
+											"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-04-22\");\r",
+											"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-04-23\");\r",
+											"    pm.expect(resp.additionalneeds).to.eql(\"Bad feeling\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No params",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold",
+											"disabled": true
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen",
+											"disabled": true
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22",
+											"disabled": true
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Params: names, dates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get expected id\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.eql(pm.collectionVariables.get(\"id\"))\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking?firstname=Arnold&lastname=Flugegeheimen&checkin=2024-04-22&checkout=2024-04-23",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold"
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen"
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22"
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Params: names",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get expected id\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.eql(pm.collectionVariables.get(\"id\"))\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking?firstname=Arnold&lastname=Flugegeheimen",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold"
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen"
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22",
+											"disabled": true
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Params: check(-in/-out)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get expected id\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.eql(pm.collectionVariables.get(\"id\"))\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking?checkin=2024-04-22&checkout=2024-04-23",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold",
+											"disabled": true
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen",
+											"disabled": true
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22"
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Params: checkin only",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking?checkin=2024-04-22",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold",
+											"disabled": true
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen",
+											"disabled": true
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22"
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Params: checkout only",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Get id(number)\", () => {\r",
+											"    pm.expect((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/booking?checkout=2024-04-23",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"booking"
+									],
+									"query": [
+										{
+											"key": "firstname",
+											"value": "Arnold",
+											"disabled": true
+										},
+										{
+											"key": "lastname",
+											"value": "Flugegeheimen",
+											"disabled": true
+										},
+										{
+											"key": "checkin",
+											"value": "2024-04-22",
+											"disabled": true
+										},
+										{
+											"key": "checkout",
+											"value": "2024-04-23"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Booking/:id",
+					"item": [
+						{
+							"name": "PUT",
+							"item": [
+								{
+									"name": "Cookie (change all)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test body\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.firstname).to.eql(\"Louis\");\r",
+													"    pm.expect(resp.lastname).to.eql(\"Armstrong\");\r",
+													"    pm.expect(resp.totalprice).to.eql(9999);\r",
+													"    pm.expect(resp.depositpaid).to.eql(false);\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-03-22\");\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-03-24\");\r",
+													"    pm.expect(resp.additionalneeds).to.eql(\"GOOD feeling\")\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Louis\",\r\n    \"lastname\" : \"Armstrong\",\r\n    \"totalprice\" : 9999,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-03-22\",\r\n        \"checkout\" : \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No firstname field",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"lastname\": \"Armstrong\",\r\n    \"totalprice\": 9999,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\",\r\n        \"checkout\": \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No lastname",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"totalprice\": 9999,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\",\r\n        \"checkout\": \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No totalprice",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"lastname\": \"Armstrong\",\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\",\r\n        \"checkout\": \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No deposite",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"lastname\": \"Armstrong\",\r\n    \"totalprice\": 9999,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\",\r\n        \"checkout\": \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No checkin",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"lastname\": \"Armstrong\",\r\n    \"totalprice\": 9999,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkout\": \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No checkout",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"lastname\": \"Armstrong\",\r\n    \"totalprice\": 9999,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\"\r\n    },\r\n    \"additionalneeds\": \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No add needs",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"Louis\",\r\n    \"lastname\": \"Armstrong\",\r\n    \"totalprice\": 9999,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-03-22\",\r\n        \"checkout\": \"2024-03-24\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Empty id-key, cookie token",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Louis\",\r\n    \"lastname\" : \"Armstrong\",\r\n    \"totalprice\" : 9999,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-03-22\",\r\n        \"checkout\" : \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No id-key, cookie token",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Louis\",\r\n    \"lastname\" : \"Armstrong\",\r\n    \"totalprice\" : 9999,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-03-22\",\r\n        \"checkout\" : \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": " "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Incorrect id-key, cookie token",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Louis\",\r\n    \"lastname\" : \"Armstrong\",\r\n    \"totalprice\" : 9999,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-03-22\",\r\n        \"checkout\" : \"2024-03-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "Я бы не выполнил этот приказ, будь ты хоть трижды королем!"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Auth basic (change all)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test body\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.firstname).to.eql(\"Arnold\");\r",
+													"    pm.expect(resp.lastname).to.eql(\"Strong\");\r",
+													"    pm.expect(resp.totalprice).to.eql(0);\r",
+													"    pm.expect(resp.depositpaid).to.eql(true);\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-04-22\");\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-04-24\");\r",
+													"    pm.expect(resp.additionalneeds).to.eql(\"Flamingo\")\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Arnold\",\r\n    \"lastname\" : \"Strong\",\r\n    \"totalprice\" : 0,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-24\"\r\n    },\r\n    \"additionalneeds\" : \"Flamingo\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No Auth, No token in Headers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Lui\",\r\n    \"lastname\" : \"Strong\",\r\n    \"totalprice\" : 1111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Nonexistent cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token=FORKHAZMODAN",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Lui\",\r\n    \"lastname\" : \"Strong\",\r\n    \"totalprice\" : 1111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-24\"\r\n    },\r\n    \"additionalneeds\" : \"GOOD feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User id (no auth)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test body\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.firstname).to.eql(\"Arnold\");\r",
+													"    pm.expect(resp.lastname).to.eql(\"Strong\");\r",
+													"    pm.expect(resp.totalprice).to.eql(0);\r",
+													"    pm.expect(resp.depositpaid).to.eql(true);\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-04-22\");\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-04-24\");\r",
+													"    pm.expect(resp.additionalneeds).to.eql(\"Flamingo\")\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PATCH",
+							"item": [
+								{
+									"name": "Auth chars, negative number, reverse datse",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test body\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.firstname).to.eql(\"@\");\r",
+													"    pm.expect(resp.lastname).to.eql(\"<---   --->\");\r",
+													"    pm.expect(resp.totalprice).to.eql(-1111);\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"2024-04-24\");\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"2024-04-22\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\": \"@\",\r\n    \"lastname\": \"<---   --->\",\r\n    \"totalprice\": -1111,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-04-24\",\r\n        \"checkout\": \"2024-04-22\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Cookie totalprice(null), dates(range)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Chekin date in past\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"1991-05-17\")\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Checkout date too far)\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"9999-12-31\")\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"totalprice\": null,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"1991-05-17\",\r\n        \"checkout\": \"9999-12-31\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Cookie dates(char), addneeds(null)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test Date format (checkin)\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect.fail(resp.bookingdates.checkin).to.eql(\"@\")\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test Date format (checkout)\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect.fail(resp.bookingdates.checkout).to.eql(\"Бунт\")\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No id-key, auth basic",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    },\r\n    \"additionalneeds\": null\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Empty id-key, auth basic",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    },\r\n    \"additionalneeds\": null\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": " "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Incorrect id-key, cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    },\r\n    \"additionalneeds\": null\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "Проклятье, Утер!"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Nonexistent cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token=ForKhazMODAN",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    },\r\n    \"additionalneeds\": null\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": " "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Wrong auth data",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "dothehoola",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "admin",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \"bookingdates\": {\r\n        \"checkin\": \"@\",\r\n        \"checkout\": \"Бунт\"\r\n    },\r\n    \"additionalneeds\": null\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": " "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 200 OK\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Test body\", () => {\r",
+													"    const resp = pm.response.json();\r",
+													"    pm.expect(resp.firstname).to.eql(\"@\");\r",
+													"    pm.expect(resp.lastname).to.eql(\"<---   --->\");\r",
+													"    pm.expect(resp.totalprice).to.eql(null);\r",
+													"    pm.expect(resp.depositpaid).to.eql(true);\r",
+													"    pm.expect(resp.bookingdates.checkin).to.eql(\"0NaN-aN-aN\");\r",
+													"    pm.expect(resp.bookingdates.checkout).to.eql(\"0NaN-aN-aN\")\r",
+													"    pm.expect(resp.additionalneeds).to.eql(\"Flamingo\")\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "DELETE",
+							"item": [
+								{
+									"name": "Create test user",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const fast_id = pm.response.json().bookingid;\r",
+													"pm.collectionVariables.set('fast_id', fast_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstname\" : \"Arnold\",\r\n    \"lastname\" : \"Flugegeheimen\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-23\"\r\n    },\r\n    \"additionalneeds\" : \"Bad feeling\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/booking",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "- smnelse id cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 201 Created\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{fast_id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Id of test user",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 404 Not found\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{fast_id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "No id-key Auth basic",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Incorrect id-key auth basic",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "Я обрел власть, которая и не снилась моему отцу!"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Empty id-key cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 400 Bad request\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token={{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": " "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Nonexistent cookie token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+													"    pm.response.to.have.status(403);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "token=Fall of the Lich King",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Auth basic",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 201 Created\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete deleted",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 404 Not found\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{user}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{pass}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/booking/:id",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"booking",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Ping",
+					"item": [
+						{
+							"name": "No Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 201 Created\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ping",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ping"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 201 Created\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ping",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ping"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Non auth user",
+			"item": [
+				{
+					"name": "Create victim user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const victim_id = pm.response.json().bookingid;\r",
+									"pm.collectionVariables.set('victim_id', victim_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Melee\",\r\n    \"lastname\" : \"Fighter\",\r\n    \"totalprice\" : 0.5,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-22\"\r\n    },\r\n    \"additionalneeds\" : \"Born to die\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/booking",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authorization no user and pass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const bad_token = pm.response.json().token;\r",
+									"pm.collectionVariables.set('bad_token', bad_token);\r",
+									"\r",
+									"pm.test(\"Verify status code is 401 Unauthorized\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const bad_id = pm.response.json().bookingid;\r",
+									"pm.collectionVariables.set('bad_id', bad_id);\r",
+									"\r",
+									"pm.test(\"Verify status code is 401 Unauthorized\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Rakanishu\",\r\n    \"lastname\" : \"Lord of the fallen\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-04-22\",\r\n        \"checkout\" : \"2024-04-23\"\r\n    },\r\n    \"additionalneeds\" : \"Zzzaaaaaap\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/booking",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Non auth user (NAU) id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 404 Not found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/booking/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find victims data by NAU",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/booking/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{victim_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NAU id on params: names",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Must not get id(number)\", () => {\r",
+									"    pm.expect.fail((JSON.parse(responseBody))[0].bookingid).to.be.a(\"number\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get unexpected id\", () => {\r",
+									"    pm.expect.fail((JSON.parse(responseBody))[0].bookingid).to.eql(pm.collectionVariables.get(\"bad_id\"))\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/booking?firstname=Rakanishu&lastname=Lord of the fallen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking"
+							],
+							"query": [
+								{
+									"key": "firstname",
+									"value": "Rakanishu"
+								},
+								{
+									"key": "lastname",
+									"value": "Lord of the fallen"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NAU changes victims data",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Melee\",\r\n    \"lastname\" : \"Gonna Hurt\",\r\n    \"totalprice\" : 0,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2024-03-22\",\r\n        \"checkout\" : \"2024-03-22\"\r\n    },\r\n    \"additionalneeds\" : \"Prepare ARUNUS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/booking/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{victim_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NAU changes victims data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"@\",\r\n    \"lastname\": \"<---   --->\",\r\n    \"totalprice\": -1111,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2024-04-22\",\r\n        \"checkout\": \"2024-04-22\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/booking/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{victim_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NAU deletes victims booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify status code is 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/booking/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{victim_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pass",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "bad_token",
+			"value": ""
+		},
+		{
+			"key": "bad_id",
+			"value": ""
+		},
+		{
+			"key": "victim_token",
+			"value": ""
+		},
+		{
+			"key": "victim_id",
+			"value": ""
+		},
+		{
+			"key": "fast_token",
+			"value": ""
+		},
+		{
+			"key": "fast_id",
+			"value": ""
+		}
+	]
+}
